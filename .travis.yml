@@ -1,0 +1,18 @@
+sudo: required
+
+language: bash
+
+services: docker
+
+env:
+  - DOCKER_ID=bryancs DOCKER_IMAGE=mon-put-instance-data VERSION=latest
+
+script:
+  - docker build -t ${DOCKER_ID}/${DOCKER_IMAGE}:${VERSION} .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push ${DOCKER_ID}/${DOCKER_IMAGE}:${VERSION}
+
+after_script:
+  - docker images
+
+# vim:set et ts=2 sw=2:
